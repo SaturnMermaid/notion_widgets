@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habit Tracker</title>
+  <style>
+    /* CSS Styles */
+    .habit-tracker {
+      font-family: 'Courier New', Courier, monospace;
+      /*background-color: #55585a;*/
+      background-image: url(https://i.pinimg.com/564x/b9/f9/b3/b9f9b3d25876cf899714e3e3dc1da970.jpg);
+      /*opacity: 0.7;*/
+      text-align: center;
+      color: aliceblue;
+      letter-spacing: 10px;
+      /*border: 1px solid #444955;*/
+      border-radius: 20px;
+      padding: 20px;
+      padding-top: 10px;
+      max-width: 400px;
+    }
+
+    .days-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .day {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #757c85;
+      border-radius: 5px;
+      background-color: #757c85;
+      opacity: 0.7;
+      margin: 2px;
+      cursor: pointer;
+    }
+
+    .day.checked {
+      background-color: rgb(133, 26, 204);
+      border-color: rgb(133, 26, 204);
+    }
+  </style>
+</head>
+<body>
+  <div class="habit-tracker">
+    <h2>Habit Tracker</h2>
+    <div class="days-container"></div>
+  </div>
+
+  <script>
+    // JavaScript Code
+    document.addEventListener("DOMContentLoaded", function() {
+      const daysContainer = document.querySelector('.days-container');
+      const habitDays = 75; // Number of habit tracking days
+
+      //retreive checked days from localStorage
+      const checkedDays = JSON.parse(localStorage.getItem('checkedDays')) || {};
+      
+      // Create habit tracking days
+      for (let i = 1; i <= habitDays; i++) {
+        const dayElement = document.createElement('div');
+        dayElement.classList.add('day');
+        dayElement.dataset.dayNumber = i;
+        
+        //check if the day is already checked and mark accordingly
+        if (checkedDays[i]) {
+            dayElement.classList.add('checked');
+        }
+
+        dayElement.addEventListener('click', toggleDay);
+        daysContainer.appendChild(dayElement);
+      }
+
+      // Toggle habit tracking day
+      function toggleDay() {
+        this.classList.toggle('checked');
+
+        // Update localStorage with the state of checked days
+        const dayNumber = parseInt(this.dataset.dayNumber);
+        checkedDays[dayNumber] = this.classList.contains('checked');
+        localStorage.setItem('checkedDays', JSON.stringify(checkedDays));
+      }
+    });
+  </script>
+</body>
+</html>
